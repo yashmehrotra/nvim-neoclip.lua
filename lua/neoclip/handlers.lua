@@ -37,6 +37,29 @@ local function get_regtype(regtype)
     end
 end
 
+local function get_register_event(register)
+    local event = vim.fn.getreginfo(register)
+    return event
+end
+
+M.handle_system_yank = function ()
+    if neoclip.stopped then
+        return
+    end
+    for _, register in ipairs({'+', '*'}) do
+        local event = get_register_event(register)
+        if #event.regcontents ~= 0 then
+            if should_add(event) then
+                    storage.insert({
+                    regtype = get_regtype(event.regtype),
+                    contents = event.regcontents,
+                    filetype = vim.bo.filetype,
+                }, 'yanks')
+            end
+        end
+    end
+end
+
 M.handle_yank_post = function()
     if neoclip.stopped then
         return

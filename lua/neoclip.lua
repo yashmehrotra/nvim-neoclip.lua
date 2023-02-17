@@ -8,7 +8,7 @@ local function setup_auto_command()
     local commands = {
         'augroup neoclip',
         'autocmd!',
-        'autocmd TextYankPost * :lua require("neoclip.handlers").handle_yank_post()',
+        'autocmd TextYankPost * :lua require("neoclip.handlers").handle_system_yank()',
         'autocmd VimLeavePre * :lua require("neoclip.handlers").on_exit()',
     }
     if vim.fn.exists('##RecordingLeave') ~= 0 and settings.get().enable_macro_history then
